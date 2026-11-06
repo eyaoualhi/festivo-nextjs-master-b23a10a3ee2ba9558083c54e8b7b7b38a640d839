@@ -1,0 +1,48 @@
+---
+description: Conventions de code TypeScript, nommage, Git et travail en équipe (cahier §05, §08, §11)
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
+---
+
+# Conventions de code
+
+## TypeScript
+
+- Mode `strict` conservé. Pas de `any` (ni `as any`, présent dans l'exemple Mongoose du cours) :
+  typer ou utiliser `unknown` puis affiner.
+- Types partagés dans `types/` ; types locaux à côté de leur composant.
+- Fonctions exportées : paramètres et retour typés explicitement.
+
+## Nommage
+
+| Élément | Convention | Exemple |
+|---|---|---|
+| Composant et son fichier | PascalCase | `components/ui/EventCard.tsx` |
+| Hook | `useXxx`, camelCase | `hooks/useLocalStorage.ts` |
+| Provider de contexte | `XxxProvider` + `useXxx` | `context/UserContext.tsx` |
+| Server Actions | fichier par entité, verbe + nom | `app/actions/Event.ts` → `createEvent` |
+| Modèle de données | PascalCase singulier | `models/Event.ts` |
+| Segment de route | kebab-case, français ou anglais mais cohérent | `app/events/[id]/` |
+
+Code (identifiants) en anglais, textes affichés à l'utilisateur dans les dictionnaires
+`lib/i18n/dictionaries/` (français, anglais, arabe tunisien — D-19).
+
+## Qualité
+
+- `npm run lint`, `npm run typecheck`, `npm run format:check` et `npm run build` passent avant
+  toute pull request. Prettier formate, ESLint (`eslint-config-next`) contrôle.
+- Pas de `console.log` laissé dans le code livré (un `console.error` dans un `catch` serveur est
+  accepté).
+- Aucun secret, URL de base ou clé dans le code : variables d'environnement uniquement.
+- Pas de données fictives codées en dur pour simuler l'application, sauf le jeu de
+  démonstration isolé dans `lib/demo/` et lu uniquement via `lib/events.ts` (D-18).
+
+## Git et équipe (cahier §08, §11)
+
+- Une branche par fonctionnalité : `feature/bf-02-recherche`, `fix/...`.
+- Demande de fusion GitLab avec revue croisée avant fusion ; intégrer souvent. `master` est
+  protégée et le pipeline (`.gitlab-ci.yml` : lint, types, formatage, build) doit passer
+  (D-28). Procédure dans le `README.md`.
+- Toute décision technique (base, auth, librairie ajoutée) est consignée dans
+  `docs/decisions.md` dans la même PR.
+- Le `README.md` reste à jour (installation, configuration, lancement).

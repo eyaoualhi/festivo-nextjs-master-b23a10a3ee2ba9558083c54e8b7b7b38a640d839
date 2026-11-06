@@ -1,0 +1,63 @@
+---
+description: Interface mobile-first avec Tailwind CSS, App Shell, accessibilité et responsive (cours ch. 2-3, cahier §05)
+globs: **/*.tsx,app/globals.css
+alwaysApply: false
+---
+
+# Interface : Tailwind CSS mobile-first (cours ch. 3)
+
+## Style
+
+- **Tailwind utility-first uniquement** : les styles sont des classes dans le TSX. Pas de
+  fichier CSS par composant, pas de CSS Modules, pas de bibliothèque de composants (Bootstrap,
+  MUI…) sans décision consignée dans `docs/decisions.md`.
+- `app/globals.css` ne contient que l'import Tailwind, les variables de thème (`@theme`) et
+  les styles de base. Toute couleur ou police de marque passe par une variable `@theme`.
+- Classes ordonnées automatiquement par `prettier-plugin-tailwindcss` (`npm run format`).
+- Un motif de classes répété ≥ 3 fois devient un composant dans `components/ui/`, pas une
+  classe CSS personnalisée.
+
+## Mobile-first
+
+Les classes sans préfixe ciblent le **mobile** ; on élargit ensuite avec `sm:`, `md:`, `lg:`.
+
+```tsx
+// ✅ mobile d'abord
+<h1 className="text-xl md:text-3xl">…</h1>
+<ul className="flex flex-col gap-3 md:grid md:grid-cols-2">…</ul>
+
+// ❌ desktop d'abord puis correction mobile
+<h1 className="text-3xl max-md:text-xl">…</h1>
+```
+
+Mise en page avec Flexbox / Grid (`flex`, `flex-col`, `justify-between`, `grid-cols-2`).
+Cibles tactiles d'au moins 44 px (`min-h-11`), aucune interaction réservée au survol.
+
+## App Shell
+
+Header, navigation et footer sont des composants de `components/layout/`, montés dans un
+layout, jamais recopiés dans chaque page. Sur mobile, la navigation principale doit rester
+accessible au pouce (barre basse ou menu), à valider avec le responsable design (cahier §08).
+
+## Accessibilité et qualité (cahier §05)
+
+- HTML sémantique : `header`, `nav`, `main`, `footer`, un seul `h1` par page.
+- Tout champ de formulaire a un `<label>` associé ; les erreurs sont expliquées en texte.
+- Contrastes lisibles (`text-zinc-600` minimum sur fond clair), focus visible conservé.
+- Images via `next/image` avec `alt` pertinent.
+- Vérifier chaque écran sur largeur mobile et desktop, en thème clair et sombre.
+
+## Langues et thème (D-19, D-20, D-21)
+
+- Aucun texte d'interface en dur dans un composant : chaque texte est une clé de
+  `lib/i18n/dictionaries/fr.ts`, traduite dans `en.ts` et `ar.ts`. Composant serveur :
+  `const { locale, dict } = await getI18n()` ; composant client : textes reçus en props.
+- Liens internes toujours préfixés : `localizePath(locale, "/evenements")`.
+- Pluriels avec `plural(locale, n, dict.…)`, dates et heures via `lib/format.ts` (locale en
+  premier argument).
+- Arabe de droite à gauche : classes logiques uniquement (`ms-`/`me-`, `ps-`/`pe-`,
+  `start-`/`end-`, `text-start`), jamais `left-`/`right-`/`pl-`/`pr-`/`text-left`. Flèches
+  directionnelles : `rtl:-scale-x-100`.
+- Couleurs via les variables de thème (`bg-card`, `text-ink`…) ; `dark:` cible le thème
+  sombre choisi, pas seulement la préférence du système.
+- Conteneurs de page : `mx-auto max-w-360 px-4 md:px-10`.

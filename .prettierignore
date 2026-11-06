@@ -1,0 +1,12 @@
+.next
+out
+build
+node_modules
+package-lock.json
+next-env.d.ts
+docs/cahier-des-charges.html
+.agents
+.taste-skill
+skills-lock.json
+playwright-report
+test-results

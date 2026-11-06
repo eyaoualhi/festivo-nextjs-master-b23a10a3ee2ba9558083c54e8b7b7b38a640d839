@@ -1,0 +1,62 @@
+---
+description: Persistance, Server Actions, modèles de données et règles de gestion (cours ch. 5, cahier §06-07)
+globs: app/actions/**,lib/**,models/**,types/**
+alwaysApply: false
+---
+
+# Données et Server Actions (cours ch. 5)
+
+## Server Actions, pas d'API REST séparée
+
+Les mutations (créer, modifier, supprimer, s'inscrire) sont des **Server Actions** dans
+`app/actions/<Entite>.ts`, déclarées au niveau du module avec `"use server"`. Pas de backend
+séparé ; `app/**/route.ts` est réservé aux besoins qu'une action ne couvre pas.
+
+```ts
+// app/actions/<Entite>.ts
+"use server";
+
+export async function createXxx(formData: FormData): Promise<ActionResult> {
+  // 1. authentifier et vérifier les droits côté serveur
+  // 2. lire et valider formData (formData.get("champ")?.toString())
+  // 3. vérifier les règles de gestion
+  // 4. écrire en base, puis revalider le chemin concerné
+}
+```
+
+- Le formulaire appelle l'action via `<form action={createXxx}>` ; pas de `useState` pour les
+  champs (cours ch. 5). L'état d'envoi s'affiche avec `useFormStatus` dans un bouton client
+  (`<button disabled={pending}>`).
+- Retourner un résultat typé (`{ ok: true } | { ok: false; error: string }`) pour les erreurs
+  attendues ; `throw` est réservé aux erreurs inattendues.
+
+## Base de données — MongoDB + Mongoose (décision D-09, cours ch. 5)
+
+- Connexion unique et réutilisée dans `lib/db.ts` (`connectDB()`), appelée en tête de chaque
+  Server Action avant tout accès aux données.
+- Un schéma Mongoose par entité dans `models/<Entite>.ts`, exporté avec
+  `models.Xxx || mongoose.model("Xxx", XxxSchema)` (évite la redéfinition au rechargement).
+- L'URL vient de `process.env.MONGODB_URI` (`.env.local`), **jamais en dur** comme dans
+  l'exemple du cours ; `.env.example` est tenu à jour.
+- Pas d'options de connexion obsolètes (`useNewUrlParser`, `useUnifiedTopology`) ni de `as any`.
+- Mongoose ne s'importe que côté serveur (`lib/`, `models/`, `app/actions/`, Server
+  Components) : jamais dans un fichier `"use client"`.
+- Les documents renvoyés à un composant client sont convertis en objets simples
+  (`.lean()`, `_id` en `string`).
+
+## Entités du cahier (§07)
+
+`User` (nom, e-mail, rôle), `Event` (titre, description, dates, lieu, capacité, statut,
+organisateur), `Registration` (utilisateur, événement, date, statut), `Category` (optionnelle).
+Les champs définitifs sont à fixer dans `docs/decisions.md` avant le premier modèle.
+
+## Règles de gestion (cahier §06) — vérifiées côté serveur, jamais seulement dans l'UI
+
+- Seul un utilisateur autorisé crée ou modifie un événement ; un organisateur ne modifie que
+  les siens.
+- Un événement publié a au minimum titre, description, date, lieu et organisateur.
+- La date d'un nouvel événement n'est pas dans le passé.
+- Une seule inscription active par participant et par événement.
+- La capacité maximale n'est jamais dépassée.
+- Un événement annulé ou terminé n'accepte plus d'inscription.
+- Les messages d'erreur expliquent le problème sans divulguer de données sensibles.

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cahier des charges — Application mobile de gestion des événements</title>
+<style>
+:root{--ink:#172033;--muted:#64748b;--line:#e2e8f0;--bg:#f4f7fb;--card:#fff;--accent:#3157d5;--accent2:#eaf0ff;--green:#147d64}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+.hero{background:linear-gradient(130deg,#172554,#3157d5 70%,#6486f5);color:white;padding:52px 22px 42px}
+.wrap{max-width:1100px;margin:auto}
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:800;opacity:.8}
+h1{font-size:clamp(2rem,4vw,3.25rem);line-height:1.12;max-width:800px;margin:12px 0}
+.hero p{max-width:720px;color:#e1e9ff;margin:14px 0 0}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.pill{border:1px solid #ffffff55;background:#ffffff14;border-radius:99px;padding:5px 12px;font-size:.85rem}
+main{max-width:1100px;margin:28px auto 60px;padding:0 20px}
+.intro{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-bottom:22px}
+.card,.section{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 5px 18px #15234408}
+.card{padding:22px}
+.card h2,.section h2{margin:0 0 10px;font-size:1.18rem}
+.muted{color:var(--muted)}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.meta div{background:#f8fafc;border-radius:10px;padding:12px}
+.meta strong{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.meta span{font-weight:650}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 26px}
+nav a{color:#2345b8;text-decoration:none;background:#fff;border:1px solid var(--line);padding:7px 11px;border-radius:9px;font-size:.9rem}
+.section{margin:16px 0;overflow:hidden;scroll-margin-top:18px}
+.section-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
+.num{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:12px;background:var(--accent2);color:var(--accent);font-weight:800}
+.section-head h2{margin:0;font-size:1.2rem}
+.section-head p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.section-body{padding:20px 22px}
+details{border:1px solid var(--line);border-radius:12px;margin:10px 0;background:#fff}
+summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"＋";color:var(--accent);font-size:1.15rem}
+details[open] summary:after{content:"−"}
+.detail{padding:0 16px 16px;color:#334155}
+ul{padding-left:22px;margin:8px 0}
+li{margin:5px 0}
+.tag{display:inline-block;font-size:.75rem;font-weight:750;color:var(--green);background:#e7f7f1;border-radius:6px;padding:2px 7px;margin-left:5px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.mini{border:1px solid var(--line);border-radius:12px;padding:16px}
+.mini h3{margin:0 0 7px;font-size:1rem}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--line)}
+th{background:#f8fafc;font-size:.83rem;color:#475569}
+tr:last-child td{border-bottom:0}
+.callout{border-left:4px solid var(--accent);background:#f0f4ff;padding:14px 16px;border-radius:0 10px 10px 0;margin-top:14px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+button{border:1px solid var(--line);border-radius:9px;background:white;padding:7px 11px;color:var(--ink);cursor:pointer;font:inherit;font-size:.85rem}
+button:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:720px){.intro,.grid{grid-template-columns:1fr}.hero{padding-top:36px}.section-head{align-items:flex-start}.actions{margin-left:0}.section-body{padding:15px}.meta{grid-template-columns:1fr 1fr}}
+@media print{body{background:#fff}.hero{background:#fff;color:#172033;padding:20px 0}.hero p{color:#334155}main{margin:0 auto}.section,.card{box-shadow:none;break-inside:avoid}nav,.actions{display:none}details .detail{display:block}details{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Document de cadrage · Version initiale</div>
+    <h1>Cahier des charges</h1>
+    <p>Conception et développement d’une application mobile de gestion des événements, réalisée en groupe de six personnes avec Next.js.</p>
+    <div class="pills"><span class="pill">Application mobile / web responsive</span><span class="pill">Next.js</span><span class="pill">Projet académique en équipe</span></div>
+  </div>
+</header>
+<main>
+  <div class="intro">
+    <section class="card">
+      <h2>Objet du document</h2>
+      <p>Définir de manière simple et partagée les objectifs du projet, les fonctionnalités attendues, les contraintes techniques, l’organisation de l’équipe et les critères de validation. Ce document constitue une base à ajuster avec l’encadrant et l’équipe.</p>
+      <p class="muted">Les éléments marqués « à confirmer » sont des décisions à prendre avant ou pendant le lancement du développement.</p>
+    </section>
+    <section class="card">
+      <h2>Informations générales</h2>
+      <div class="meta">
+        <div><strong>Nom du projet</strong><span>EventFlow (provisoire)</span></div>
+        <div><strong>Équipe</strong><span>6 membres</span></div>
+        <div><strong>Technologie principale</strong><span>Next.js</span></div>
+        <div><strong>Version</strong><span>0.1 — Brouillon</span></div>
+      </div>
+    </section>
+  </div>
+  <nav aria-label="Navigation du document">
+    <a href="#contexte">Contexte</a><a href="#objectifs">Objectifs</a><a href="#perimetre">Périmètre</a><a href="#fonctionnel">Besoins fonctionnels</a><a href="#nonfonctionnel">Besoins non fonctionnels</a><a href="#technique">Technique</a><a href="#equipe">Équipe</a><a href="#planning">Planning</a><a href="#validation">Validation</a>
+    <span class="actions"><button onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">Tout développer</button><button onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">Tout réduire</button><button onclick="window.print()">Imprimer / PDF</button></span>
+  </nav>
+
+  <section class="section" id="contexte">
+    <div class="section-head"><span class="num">01</span><div><h2>Contexte et problématique</h2><p>Pourquoi développer cette application ?</p></div></div>
+    <div class="section-body">
+      <p>La gestion d’un événement implique plusieurs tâches : publication des informations, inscriptions, suivi des participants et mise à jour des détails. Lorsque ces informations sont dispersées entre plusieurs outils, leur suivi devient difficile.</p>
+      <details open><summary>Problématique</summary><div class="detail">Comment proposer une application simple et accessible sur téléphone permettant aux organisateurs de gérer leurs événements et aux utilisateurs de consulter les événements et de s’y inscrire ?</div></details>
+      <details><summary>Public cible</summary><div class="detail"><ul><li><b>Visiteur :</b> consulte les événements publiés.</li><li><b>Utilisateur / participant :</b> crée un compte, s’inscrit et consulte ses inscriptions.</li><li><b>Organisateur :</b> crée et gère ses événements, suit les inscriptions.</li><li><b>Administrateur :</b> supervise les comptes et le contenu, selon les règles définies.</li></ul></div></details>
+    </div>
+  </section>
+
+  <section class="section" id="objectifs">
+    <div class="section-head"><span class="num">02</span><div><h2>Objectifs du projet</h2><p>Résultats attendus</p></div></div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="mini"><h3>Objectif principal</h3><p>Développer une application responsive qui centralise les informations et les opérations essentielles de gestion des événements.</p></div>
+        <div class="mini"><h3>Objectifs spécifiques</h3><ul><li>Faciliter la découverte des événements.</li><li>Simplifier l’inscription des participants.</li><li>Permettre aux organisateurs de gérer leurs événements.</li><li>Permettre les avis, les réclamations et les échanges via un forum.</li><li>Fournir une interface claire et sécurisée.</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="perimetre">
+    <div class="section-head"><span class="num">03</span><div><h2>Périmètre du projet</h2><p>Ce qui est inclus et ce qui ne l’est pas nécessairement</p></div></div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="mini"><h3>Inclus dans la première version</h3><ul><li>Authentification et rôles de base.</li><li>Catalogue, recherche et détails des événements.</li><li>Création, modification et suppression d’événements par les personnes autorisées.</li><li>Inscription et désinscription des participants.</li><li>Tableau de bord simple pour l’organisateur.</li><li>Module Réclamation : dépôt et suivi des réclamations.</li><li>Module Avis : notation et commentaires sur les événements.</li><li>Module Forum : discussions entre utilisateurs autour des événements.</li></ul></div>
+        <div class="mini"><h3>Hors périmètre initial <span class="tag">à confirmer</span></h3><ul><li>Paiement en ligne.</li><li>Billetterie avec QR code et contrôle d’accès.</li><li>Chat en temps réel.</li><li>Application native publiée sur les stores.</li><li>Recommandations intelligentes ou intégration à des plateformes externes.</li></ul></div>
+      </div>
+      <div class="callout"><b>Précision importante :</b> Next.js permet de développer une application web responsive utilisable sur mobile. Si une application native Android/iOS est obligatoire, il faudra confirmer le choix technologique et éventuellement prévoir une solution complémentaire.</div>
+    </div>
+  </section>
+
+  <section class="section" id="fonctionnel">
+    <div class="section-head"><span class="num">04</span><div><h2>Besoins fonctionnels</h2><p>Actions que l’application doit permettre aux utilisateurs d’effectuer</p></div></div>
+    <div class="section-body">
+      <details open><summary>BF-01 — Comptes et authentification</summary><div class="detail"><ul><li>Créer un compte participant avec les informations nécessaires.</li><li>Se connecter et se déconnecter.</li><li>Consulter et modifier les informations de son profil.</li><li>Appliquer les permissions selon le rôle de l’utilisateur.</li></ul></div></details>
+      <details open><summary>BF-02 — Consultation des événements</summary><div class="detail"><ul><li>Afficher la liste des événements publiés.</li><li>Consulter une fiche détaillée : titre, description, date, heure, lieu, organisateur et capacité.</li><li>Rechercher un événement par mot-clé.</li><li>Filtrer par date, catégorie ou lieu (selon les données disponibles).</li></ul></div></details>
+      <details open><summary>BF-03 — Gestion des événements</summary><div class="detail"><ul><li>Créer un événement avec ses informations obligatoires.</li><li>Modifier ou annuler un événement dont on est responsable.</li><li>Publier ou dépublier un événement.</li><li>Définir une capacité maximale et afficher les places restantes, si cette règle est retenue.</li></ul></div></details>
+      <details open><summary>BF-04 — Inscriptions</summary><div class="detail"><ul><li>S’inscrire à un événement publié lorsque les conditions sont respectées.</li><li>Empêcher les inscriptions en double.</li><li>Empêcher une inscription si l’événement est complet ou passé.</li><li>Consulter ses inscriptions et annuler une inscription, selon les règles retenues.</li></ul></div></details>
+      <details><summary>BF-05 — Tableau de bord organisateur</summary><div class="detail"><ul><li>Afficher les événements créés par l’organisateur.</li><li>Afficher le nombre d’inscrits par événement.</li><li>Consulter la liste des participants inscrits.</li><li>Visualiser le statut de l’événement : brouillon, publié, annulé ou terminé.</li></ul></div></details>
+      <details><summary>BF-06 — Administration</summary><div class="detail"><ul><li>Consulter les comptes et événements.</li><li>Supprimer ou désactiver un contenu inapproprié, si nécessaire.</li><li>Gérer les rôles avec des droits réservés à l’administrateur.</li></ul></div></details>
+      <details><summary>BF-07 — Notifications <span class="tag">optionnel</span></summary><div class="detail"><ul><li>Afficher une confirmation après inscription ou annulation.</li><li>Prévoir des rappels ou des notifications par e-mail uniquement si le temps et les services nécessaires sont disponibles.</li></ul></div></details>
+      <details open><summary>BF-08 — Réclamation</summary><div class="detail"><ul><li>Permettre à un utilisateur connecté de déposer une réclamation (objet, description, événement concerné le cas échéant).</li><li>Consulter le statut de ses réclamations : reçue, en cours, traitée ou rejetée.</li><li>Permettre à l’organisateur ou à l’administrateur de consulter et de traiter les réclamations relevant de son périmètre.</li><li>Ajouter une réponse ou un commentaire de suivi lors du traitement.</li><li>Empêcher la modification d’une réclamation déjà traitée, sauf par un administrateur.</li></ul></div></details>
+      <details open><summary>BF-09 — Avis</summary><div class="detail"><ul><li>Permettre à un participant inscrit (ou ayant assisté) de laisser un avis sur un événement : note et commentaire.</li><li>Afficher la note moyenne et la liste des avis sur la fiche événement.</li><li>Limiter à un avis par utilisateur et par événement.</li><li>Permettre de modifier ou supprimer son propre avis.</li><li>Permettre à l’administrateur de modérer ou supprimer un avis inapproprié.</li></ul></div></details>
+      <details open><summary>BF-10 — Forum</summary><div class="detail"><ul><li>Afficher un espace de discussion lié à un événement ou un forum général.</li><li>Créer un sujet (titre et message initial) et y répondre.</li><li>Consulter la liste des sujets et le fil de discussion.</li><li>Modifier ou supprimer ses propres messages, dans les limites définies.</li><li>Permettre à l’administrateur de modérer les sujets et messages (suppression, verrouillage).</li></ul></div></details>
+      <p class="muted">Priorité conseillée : développer d’abord BF-01 à BF-04, puis le tableau de bord et l’administration, puis les modules Réclamation (BF-08), Avis (BF-09) et Forum (BF-10). Les notifications peuvent être ajoutées ensuite.</p>
+    </div>
+  </section>
+
+  <section class="section" id="nonfonctionnel">
+    <div class="section-head"><span class="num">05</span><div><h2>Besoins non fonctionnels</h2><p>Qualités et contraintes attendues du système</p></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table><thead><tr><th>Catégorie</th><th>Exigence proposée</th><th>Vérification</th></tr></thead><tbody>
+        <tr><td><b>Ergonomie</b></td><td>Interface simple, cohérente et adaptée à l’usage sur téléphone.</td><td>Parcours principaux testés sur écran mobile et ordinateur.</td></tr>
+        <tr><td><b>Responsive design</b></td><td>Les pages s’adaptent aux différentes tailles d’écran.</td><td>Vérification sur plusieurs largeurs d’écran.</td></tr>
+        <tr><td><b>Performance</b></td><td>Les pages principales et listes restent fluides avec un volume de données raisonnable.</td><td>Tests manuels et optimisation des images/requêtes.</td></tr>
+        <tr><td><b>Sécurité</b></td><td>Validation des données, contrôle d’accès côté serveur, mots de passe protégés par le mécanisme d’authentification choisi.</td><td>Un utilisateur ne peut pas modifier un événement qui ne lui appartient pas.</td></tr>
+        <tr><td><b>Fiabilité</b></td><td>Les erreurs sont gérées clairement et les données sont enregistrées de façon cohérente.</td><td>Tester formulaires invalides, doublons et événements complets.</td></tr>
+        <tr><td><b>Maintenabilité</b></td><td>Code structuré, composants réutilisables, conventions de nommage et documentation minimale.</td><td>Revue de code et README à jour.</td></tr>
+        <tr><td><b>Compatibilité</b></td><td>Compatibilité avec les versions récentes des navigateurs courants.</td><td>Tests sur Chrome et au moins un autre navigateur.</td></tr>
+        <tr><td><b>Accessibilité</b></td><td>Contrastes lisibles, labels de formulaires et navigation compréhensible.</td><td>Contrôle manuel des formulaires et éléments interactifs.</td></tr>
+      </tbody></table></div>
+    </div>
+  </section>
+
+  <section class="section" id="regles">
+    <div class="section-head"><span class="num">06</span><div><h2>Règles de gestion</h2><p>Règles métier à respecter</p></div></div>
+    <div class="section-body">
+      <ul>
+        <li>Seul un utilisateur autorisé peut créer ou modifier un événement.</li>
+        <li>Un événement publié doit contenir au minimum un titre, une description, une date, un lieu et un organisateur.</li>
+        <li>La date d’un nouvel événement ne doit pas être dans le passé, sauf besoin explicitement accepté.</li>
+        <li>Un participant ne peut avoir qu’une inscription active par événement.</li>
+        <li>La capacité maximale, si elle est définie, ne doit pas être dépassée.</li>
+        <li>Les événements annulés ou terminés ne doivent plus accepter de nouvelles inscriptions.</li>
+        <li>Une réclamation doit être associée à un utilisateur connecté et comporter un objet et une description.</li>
+        <li>Seul l’auteur, l’organisateur concerné ou un administrateur peut consulter le détail d’une réclamation selon les droits définis.</li>
+        <li>Un utilisateur ne peut déposer qu’un seul avis par événement.</li>
+        <li>Seuls les participants inscrits (ou ayant assisté) peuvent laisser un avis, selon la règle retenue.</li>
+        <li>Les messages du forum doivent respecter les règles de modération ; l’administrateur peut supprimer ou verrouiller un contenu.</li>
+        <li>Les erreurs de validation doivent être expliquées à l’utilisateur sans divulguer de données sensibles.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="technique">
+    <div class="section-head"><span class="num">07</span><div><h2>Choix techniques et architecture</h2><p>Base de travail à valider par l’équipe</p></div></div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="mini"><h3>Interface et serveur</h3><ul><li><b>Next.js</b> avec React et TypeScript recommandé.</li><li>CSS Modules, Tailwind CSS ou autre solution commune choisie par l’équipe.</li><li>Routes API / Server Actions selon l’architecture retenue.</li></ul></div>
+        <div class="mini"><h3>Données et authentification</h3><ul><li>Base de données : PostgreSQL ou MySQL (choisir une seule option).</li><li>ORM possible : Prisma.</li><li>Authentification : solution choisie collectivement et documentée.</li></ul></div>
+        <div class="mini"><h3>Outils de collaboration</h3><ul><li>Git et GitHub/GitLab.</li><li>Gestion des tâches : GitHub Projects, Trello ou Jira.</li><li>Communication via un canal commun.</li></ul></div>
+        <div class="mini"><h3>Déploiement et tests</h3><ul><li>Déploiement de démonstration sur une plateforme compatible avec Next.js.</li><li>Tests manuels des parcours principaux et tests automatisés ciblés.</li><li>Fichier README avec installation, configuration et lancement.</li></ul></div>
+      </div>
+      <details><summary>Entités principales envisagées</summary><div class="detail"><ul><li><b>User :</b> identifiant, nom, e-mail, rôle.</li><li><b>Event :</b> identifiant, titre, description, dates, lieu, capacité, statut, organisateur.</li><li><b>Registration :</b> identifiant, utilisateur, événement, date d’inscription, statut.</li><li><b>Category :</b> identifiant, nom (si les catégories sont retenues).</li><li><b>Complaint (Réclamation) :</b> identifiant, auteur, événement (optionnel), objet, description, statut, réponse, dates.</li><li><b>Review (Avis) :</b> identifiant, auteur, événement, note, commentaire, dates.</li><li><b>ForumTopic :</b> identifiant, auteur, événement (optionnel), titre, statut (ouvert / verrouillé), dates.</li><li><b>ForumPost :</b> identifiant, sujet, auteur, contenu, dates.</li></ul><p>Les champs définitifs et les relations devront être précisés dans le modèle de données.</p></div></details>
+    </div>
+  </section>
+
+  <section class="section" id="equipe">
+    <div class="section-head"><span class="num">08</span><div><h2>Répartition du travail — 6 personnes</h2><p>Proposition équilibrée, à adapter selon les compétences</p></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table><thead><tr><th>Membre</th><th>Responsabilité principale</th><th>Travaux attendus</th></tr></thead><tbody>
+        <tr><td><b>Membre 1</b></td><td>Coordination et intégration</td><td>Suivi des tâches, conventions communes, intégration des branches, revue globale et documentation finale.</td></tr>
+        <tr><td><b>Membre 2</b></td><td>Interface et design système</td><td>Maquettes, navigation, composants partagés, responsive design et cohérence visuelle.</td></tr>
+        <tr><td><b>Membre 3</b></td><td>Authentification et profils</td><td>Inscription, connexion, profil, rôles et protections d’accès.</td></tr>
+        <tr><td><b>Membre 4</b></td><td>Catalogue et recherche</td><td>Liste des événements, page de détail, filtres et recherche.</td></tr>
+        <tr><td><b>Membre 5</b></td><td>Gestion des événements</td><td>Création, modification, publication, annulation et tableau de bord organisateur.</td></tr>
+        <tr><td><b>Membre 6</b></td><td>Inscriptions, tests et qualité</td><td>Parcours d’inscription, règles métier, scénarios de test et aide à la recette.</td></tr>
+      </tbody></table></div>
+      <div class="callout"><b>Mode de travail :</b> chaque membre contribue au code et aux tests. La répartition indique un responsable principal, pas une responsabilité exclusive. Les revues croisées permettent d’éviter qu’une seule personne maîtrise une partie essentielle du projet.</div>
+    </div>
+  </section>
+
+  <section class="section" id="planning">
+    <div class="section-head"><span class="num">09</span><div><h2>Planning prévisionnel</h2><p>Exemple pour un projet court — à adapter à la durée réelle</p></div></div>
+    <div class="section-body">
+      <div class="table-wrap"><table><thead><tr><th>Phase</th><th>Activités</th><th>Livrable</th></tr></thead><tbody>
+        <tr><td>1. Cadrage</td><td>Valider les besoins, le périmètre, les rôles et les maquettes.</td><td>Cahier des charges + backlog initial.</td></tr>
+        <tr><td>2. Mise en place</td><td>Créer le dépôt, initialiser Next.js, choisir la base de données et définir le modèle.</td><td>Socle technique fonctionnel.</td></tr>
+        <tr><td>3. Développement principal</td><td>Réaliser les comptes, événements, recherche, inscriptions, puis réclamations, avis et forum.</td><td>Version fonctionnelle intégrée.</td></tr>
+        <tr><td>4. Intégration et tests</td><td>Corriger les anomalies, vérifier les permissions et tester les écrans mobiles.</td><td>Version candidate à la livraison.</td></tr>
+        <tr><td>5. Livraison</td><td>Déployer, rédiger le README et préparer la démonstration.</td><td>Application, code source et présentation.</td></tr>
+      </tbody></table></div>
+      <p class="muted">À compléter : dates de début et de fin, durée de chaque phase, jalons et responsable de validation.</p>
+    </div>
+  </section>
+
+  <section class="section" id="validation">
+    <div class="section-head"><span class="num">10</span><div><h2>Livrables et critères de validation</h2><p>Comment déterminer que le projet est terminé ?</p></div></div>
+    <div class="section-body">
+      <div class="grid">
+        <div class="mini"><h3>Livrables attendus</h3><ul><li>Cahier des charges validé.</li><li>Maquettes ou schémas de navigation.</li><li>Code source versionné.</li><li>Modèle de données et configuration documentée.</li><li>Application déployée ou démontrable localement.</li><li>README et support de présentation.</li></ul></div>
+        <div class="mini"><h3>Critères d’acceptation</h3><ul><li>Un utilisateur peut créer un compte et se connecter.</li><li>Les événements publiés peuvent être consultés et recherchés.</li><li>Un organisateur autorisé peut gérer ses événements.</li><li>Un participant peut s’inscrire et consulter ses inscriptions.</li><li>Un utilisateur connecté peut déposer une réclamation et en suivre le statut.</li><li>Un participant peut laisser un avis (note et commentaire) sur un événement, et la moyenne s’affiche.</li><li>Les utilisateurs peuvent créer des sujets et répondre dans le forum ; la modération admin fonctionne.</li><li>Les règles de capacité et les doublons sont correctement gérés si activés.</li><li>Les parcours principaux fonctionnent sur mobile et ordinateur.</li><li>Aucune anomalie bloquante connue au moment de la démonstration.</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="risques">
+    <div class="section-head"><span class="num">11</span><div><h2>Risques et mesures préventives</h2><p>Anticiper les difficultés de travail en groupe</p></div></div>
+    <div class="section-body">
+      <ul>
+        <li><b>Conflits de code :</b> définir les conventions, créer des branches par fonctionnalité et effectuer des revues de pull requests.</li>
+        <li><b>Fonctionnalités trop ambitieuses :</b> prioriser une version minimale fonctionnelle avant les options.</li>
+        <li><b>Retards d’intégration :</b> intégrer régulièrement les travaux au lieu d’attendre la fin du projet.</li>
+        <li><b>Décisions techniques divergentes :</b> consigner les choix dans un README ou une courte note d’architecture.</li>
+        <li><b>Disponibilités inégales :</b> rendre les tâches visibles et prévoir un point d’équipe régulier.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="hypotheses">
+    <div class="section-head"><span class="num">12</span><div><h2>Hypothèses et décisions à confirmer</h2><p>Points à trancher collectivement avant le développement complet</p></div></div>
+    <div class="section-body">
+      <ul>
+        <li>L’application attendue est-elle une application web responsive ou une application native mobile ?</li>
+        <li>Quels rôles sont nécessaires : participant, organisateur, administrateur ?</li>
+        <li>Quelle base de données et quelle solution d’authentification seront utilisées ?</li>
+        <li>Les événements nécessitent-ils une validation par un administrateur avant publication ?</li>
+        <li>Les inscriptions sont-elles gratuites uniquement ? Le paiement est-il exclu du projet ?</li>
+        <li>Les notifications par e-mail sont-elles obligatoires ou optionnelles ?</li>
+        <li>Quelles sont les dates limites, les contraintes de présentation et les exigences de l’encadrant ?</li>
+      </ul>
+      <div class="callout"><b>Validation du cahier des charges :</b> le document sera considéré comme validé lorsque le groupe et l’encadrant auront confirmé le périmètre, les fonctionnalités prioritaires, la pile technique et le planning.</div>
+    </div>
+  </section>
+  <footer>EventFlow — Cahier des charges initial · Document de travail à compléter par le groupe</footer>
+</main>
+</body>
+</html>

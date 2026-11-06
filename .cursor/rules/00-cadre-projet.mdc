@@ -1,0 +1,61 @@
+---
+description: Cadre du projet Festivo — sources de référence obligatoires, état du projet et interdits
+alwaysApply: true
+---
+
+# Cadre du projet Festivo
+
+Projet académique (module « Modern Mobile Applications », équipe de 6) : une **PWA Next.js**
+de gestion des événements. Toute décision technique, d'architecture, de code, d'interface ou
+de composant **doit s'appuyer sur les sources ci-dessous**. Ne jamais inventer une convention
+qui ne s'y trouve pas : si une source ne tranche pas, le signaler et demander.
+
+## Hiérarchie des sources (de la plus forte à la plus faible)
+
+1. **Cahier des charges** — `docs/cahier-des-charges.html` : périmètre, besoins fonctionnels
+   (BF-01 à BF-07), besoins non fonctionnels, règles de gestion, critères d'acceptation.
+2. **Cours « Modern Mobile Applications »**, chapitres 1 à 5 — résumé dans le skill
+   `festivo-reference` (`.cursor/skills/festivo-reference/cours.md`). Il fixe la pile, les
+   patterns de code et l'architecture.
+3. **Documentation de la version installée de Next.js** — `node_modules/next/dist/docs/`.
+   Elle ne prime que sur la **syntaxe d'API** : quand un exemple du cours ne compile plus dans
+   la version installée, on garde l'intention du cours et la syntaxe actuelle.
+4. **Décisions d'équipe** — `docs/decisions.md`. Toute décision prise est consignée ici.
+
+## Pile imposée par les sources
+
+- Next.js (App Router, dossier `app/`), React, **TypeScript** — cours ch. 2, cahier §07.
+- **Tailwind CSS**, approche mobile-first — cours ch. 3.
+- PWA : `public/manifest.json` + Service Worker `public/sw.js`, HTTPS — cours ch. 1 et 3.
+- Données : **Server Actions** + **MongoDB / Mongoose** — cours ch. 5, décision D-09. Ne pas
+  proposer PostgreSQL, MySQL ni Prisma (mentionnés par le cahier §07, écartés par l'équipe).
+
+## Nom du projet
+
+Le cahier des charges nomme le projet « EventFlow (provisoire) ». Le nom définitif est
+**Festivo** (décision D-08) : l'utiliser dans le code, l'interface et la documentation.
+
+## Points encore ouverts (ne pas décider seul)
+
+- Authentification (D-10 : next-auth) et rôles (D-11 : visiteur, participant, organisateur,
+  administrateur) sont tranchés ; next-auth ne s'installe qu'au développement de BF-01.
+- Catégories (D-15) et places restantes (D-16) sont tranchées ; l'interface utilise un jeu de
+  démonstration temporaire (D-18).
+- Points restants : `docs/decisions.md`, section « Décisions à prendre » (validation admin,
+  e-mails, déploiement, champs des entités, stockage des images).
+
+## État actuel : squelette uniquement
+
+Le dépôt ne contient **aucune fonctionnalité métier**. Ne rien implémenter du cahier des
+charges sans instruction explicite de l'utilisateur. Ordre de priorité quand le développement
+sera demandé : BF-01 → BF-04, puis BF-05 (tableau de bord), BF-06 (administration), BF-07.
+
+## Hors périmètre initial (cahier §03)
+
+Paiement, billetterie QR, chat temps réel, publication sur les stores, recommandations.
+Ne pas les introduire sans validation.
+
+## Avant de livrer une modification
+
+`npm run lint`, `npm run typecheck` et `npm run build` doivent passer (skill
+`verification-qualite`).

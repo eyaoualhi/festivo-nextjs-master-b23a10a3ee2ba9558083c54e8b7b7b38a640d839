@@ -1,0 +1,54 @@
+---
+description: Composants React, props, état et hooks dans Next.js (cours ch. 4)
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# Composants React et hooks (cours ch. 4)
+
+## Serveur par défaut, client seulement si nécessaire
+
+Tout composant est un **Server Component** par défaut. Ajouter `"use client"` en première ligne
+**uniquement** si le composant :
+
+- utilise `useState`, `useEffect`, `useContext` ou un hook client ;
+- gère des événements utilisateur (clic, saisie, survol) ;
+- accède au DOM ou à une API du navigateur (`localStorage`, `navigator`).
+
+Garder la partie client la plus petite possible : extraire le bouton interactif dans son
+propre fichier plutôt que de passer toute la page en client.
+
+## Composants et props
+
+- Composant = fonction nommée en PascalCase, un composant exporté par fichier.
+- Props **déstructurées et typées** (forme recommandée par le cours) :
+
+```tsx
+type WelcomeProps = { name: string };
+
+export default function Welcome({ name }: WelcomeProps) {
+  return <h1>Bonjour {name}</h1>;
+}
+```
+
+- Données parent → enfant via les props ; pas d'état dupliqué entre composants.
+
+## État
+
+- **Client state** (formulaire ouvert, menu, compteur) : `useState` dans le composant.
+- **Server state** (événements, utilisateurs) : lu côté serveur (Server Component / Server
+  Action), jamais recopié dans un `useState` pour être « mis en cache ».
+- État partagé : **React Context** dans `context/` — un `XxxProvider` + un hook `useXxx()`
+  (modèle `UserProvider` / `useUser` du cours). Typer le contexte, refuser `createContext()`
+  sans type.
+
+## Hooks
+
+- `useEffect` : toujours un tableau de dépendances, et une fonction de nettoyage pour tout
+  `setInterval`, abonnement ou écouteur (`return () => clearInterval(id)`).
+- Navigation : `useRouter` importé de **`next/navigation`** (jamais `next/router`) ;
+  `router.push`, `replace`, `back`, `prefetch`. Pour un lien simple, préférer `<Link>`.
+- Paramètres d'URL côté client : `useParams` / `useSearchParams` (`router.query` du cours
+  n'existe pas dans l'App Router).
+- Hooks personnalisés dans `hooks/`, nommés `useXxx`, typés (ex. `useLocalStorage<T>`). Tout
+  accès à `localStorage` se fait dans un `useEffect`, jamais au rendu serveur.

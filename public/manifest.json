@@ -1,0 +1,78 @@
+{
+  "id": "/",
+  "short_name": "Festivo",
+  "name": "Festivo — Gestion des événements",
+  "description": "Découvrez les événements publiés, inscrivez-vous et organisez les vôtres.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["entertainment", "events", "lifestyle"],
+  "background_color": "#ffffff",
+  "theme_color": "#2748c4",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explorer les événements",
+      "short_name": "Explorer",
+      "url": "/fr/evenements",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Se connecter",
+      "short_name": "Connexion",
+      "url": "/fr/connexion",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/accueil-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Accueil de Festivo sur téléphone"
+    },
+    {
+      "src": "/screenshots/accueil-large.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Accueil de Festivo sur grand écran"
+    }
+  ]
+}

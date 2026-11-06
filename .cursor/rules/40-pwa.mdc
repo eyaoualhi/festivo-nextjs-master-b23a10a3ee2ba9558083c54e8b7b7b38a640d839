@@ -1,0 +1,44 @@
+---
+description: PWA — Web App Manifest, Service Worker, stratégies de cache, HTTPS (cours ch. 1 et 3)
+globs: public/**,app/layout.tsx,next.config.ts,components/**/*ServiceWorker*
+alwaysApply: false
+---
+
+# PWA (cours ch. 1 et 3)
+
+Les trois piliers sont obligatoires : **HTTPS**, **Web App Manifest**, **Service Worker**.
+
+## Manifest — `public/manifest.json` (emplacement imposé par le cours)
+
+Déjà créé et lié via `metadata.manifest` dans `app/layout.tsx`. Ne pas le dupliquer avec un
+`app/manifest.ts`. Champs requis : `name`, `short_name`, `description`, `start_url`,
+`display: "standalone"`, `background_color`, `theme_color`, `icons` (192 et 512 px dans
+`public/icons/`). `theme_color` reste identique à `viewport.themeColor` du layout.
+
+## Service Worker — `public/sw.js`
+
+- Fichier JavaScript servi depuis la racine (portée `/`), enregistré par un petit composant
+  client monté dans le layout racine.
+- Cycle de vie : `install` (pré-cache de l'App Shell) → `activate` (suppression des anciens
+  caches versionnés, ex. `festivo-shell-v1`) → `fetch` (stratégie de cache).
+- Pas d'accès au DOM depuis le SW. Ne jamais mettre en cache les Server Actions, les requêtes
+  `POST` ni les réponses authentifiées.
+
+## Choix de la stratégie de cache
+
+| Ressource | Stratégie |
+|---|---|
+| Coquille (HTML de base, CSS, JS, icônes) | Cache First |
+| Pages de contenu (liste et détail d'événements) | Network First, cache en secours |
+| Images d'événements | Stale-While-Revalidate |
+| Mutations, authentification, inscriptions | Network Only |
+
+## Sécurité et test
+
+- Le SW n'est actif qu'en HTTPS (ou `localhost`). Tester avec `npm run dev:https`, puis
+  `npm run build && npm run start` : le mode dev ne reflète pas le comportement hors ligne.
+- Ajouter pour `/sw.js` les en-têtes `Cache-Control: no-cache, no-store, must-revalidate`
+  dans `next.config.ts` (guide `progressive-web-apps.md` de la doc Next.js installée).
+- Vérifier l'installabilité dans DevTools → Application → Manifest / Service Workers.
+
+Procédure détaillée : skill `pwa-offline`.

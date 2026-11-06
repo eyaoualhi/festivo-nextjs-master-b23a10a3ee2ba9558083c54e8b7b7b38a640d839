@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --c-canvas: #ffffff;
+  --c-card: #ffffff;
+  --c-surface: #f8fafc;
+  --c-ink: #0a0a0a;
+  --c-muted: #5b5f6b;
+  --c-line: #e4e6ec;
+  --c-line-strong: #cdd1da;
+  --c-primary: #2748c4;
+  --c-primary-hover: #1a2f86;
+  --c-primary-soft: #eef2ff;
+  --c-accent: #c2410c;
+  --c-accent-soft: #ffedd5;
+  --c-cta: #2748c4;
+  --c-cta-hover: #1a2f86;
+  --c-danger: #dc2626;
+  --c-danger-soft: #fef2f2;
+  --c-success: #15803d;
+  --c-success-soft: #f0fdf4;
+  --c-warning: #b45309;
+  --c-warning-soft: #fffbeb;
+  --c-tile: #f1f3f8;
+  /* Bandeaux noirs de l'accueil (D-26) ; légèrement relevés en thème sombre pour rester visibles. */
+  --c-band: #0a0a0a;
+  --c-band-tile: #1c1c1f;
+  /* Bleus de la marque (D-26) : identiques dans les deux thèmes. */
+  --c-paper: #ffffff;
+  --c-night: #0a0a0a;
+  --c-blue-900: #13225c;
+  --c-blue-800: #1a2f86;
+  --c-blue-700: #2140aa;
+  --c-blue-600: #2748c4;
+  --c-blue-500: #4763d4;
+  --c-blue-400: #7b93ff;
+  --c-blue-300: #9fb0ef;
+  --c-blue-100: #d4dcf8;
+}
+
+/* `data-theme` est posé avant l'affichage par le script de `app/[lang]/layout.tsx`. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-canvas: #0a0a0b;
+  --c-card: #141417;
+  --c-surface: #101012;
+  --c-ink: #f5f5f7;
+  --c-muted: #a1a1aa;
+  --c-line: #26262b;
+  --c-line-strong: #3a3a40;
+  --c-primary: #7b93ff;
+  --c-primary-hover: #9fb0ef;
+  --c-primary-soft: #16182a;
+  --c-accent: #fb923c;
+  --c-accent-soft: #431407;
+  --c-danger: #f87171;
+  --c-danger-soft: #450a0a;
+  --c-success: #4ade80;
+  --c-success-soft: #052e16;
+  --c-warning: #fbbf24;
+  --c-warning-soft: #451a03;
+  --c-tile: #17171b;
+  --c-band: #151518;
+  --c-band-tile: #222227;
+}
+
+@theme inline {
+  --color-canvas: var(--c-canvas);
+  --color-card: var(--c-card);
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-primary: var(--c-primary);
+  --color-primary-hover: var(--c-primary-hover);
+  --color-primary-soft: var(--c-primary-soft);
+  --color-accent: var(--c-accent);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-cta: var(--c-cta);
+  --color-cta-hover: var(--c-cta-hover);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+  --color-success: var(--c-success);
+  --color-success-soft: var(--c-success-soft);
+  --color-warning: var(--c-warning);
+  --color-warning-soft: var(--c-warning-soft);
+  --color-tile: var(--c-tile);
+  --color-band: var(--c-band);
+  --color-band-tile: var(--c-band-tile);
+  --color-paper: var(--c-paper);
+  --color-night: var(--c-night);
+  --color-blue-900: var(--c-blue-900);
+  --color-blue-800: var(--c-blue-800);
+  --color-blue-700: var(--c-blue-700);
+  --color-blue-600: var(--c-blue-600);
+  --color-blue-500: var(--c-blue-500);
+  --color-blue-400: var(--c-blue-400);
+  --color-blue-300: var(--c-blue-300);
+  --color-blue-100: var(--c-blue-100);
+  --font-sans: var(--font-albert), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-albert), var(--font-arabic), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Cinq tailles de texte pour l'accueil (D-26) : le titre le plus grand plafonne à 6rem. */
+@theme {
+  --text-step-small: 0.875rem;
+  --text-step-small--line-height: 1.45;
+  --text-step-body: clamp(1rem, 0.96rem + 0.15vw, 1.0625rem);
+  --text-step-body--line-height: 1.55;
+  --text-step-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
+  --text-step-lead--line-height: 1.4;
+  --text-step-head: clamp(1.875rem, 1.45rem + 1.7vw, 3rem);
+  --text-step-head--line-height: 1.05;
+  --text-step-display: clamp(2.75rem, 1.6rem + 4.8vw, 6rem);
+  --text-step-display--line-height: 0.98;
+}
+
+/* L'espacement des lettres casse la liaison des caractères arabes. */
+[dir="rtl"] * {
+  letter-spacing: normal;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: var(--c-canvas);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+}
+
+/* Effets adaptés de Vengeance UI (D-22) : couleurs du thème, sens de lecture et thème sombre. */
+.border-beam {
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0) border-box;
+  mask-composite: exclude;
+}
+
+.border-beam::after {
+  content: "";
+  position: absolute;
+  aspect-ratio: 1;
+  width: calc(var(--beam-size) * 1px);
+  background: linear-gradient(to left, var(--c-cta), var(--c-primary), transparent);
+  offset-anchor: 90% 50%;
+  offset-path: rect(0 auto auto 0 round calc(var(--beam-size) * 1px));
+  animation: border-beam calc(var(--beam-duration) * 1s) linear infinite;
+  animation-delay: calc(var(--beam-delay) * -1s);
+}
+
+@keyframes border-beam {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.fade-rise {
+  animation: fade-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+}
+
+/*
+ * Ouverture de l'accueil animée par GSAP (`HomeMotion`, D-26). Le haut de page est masqué avant
+ * l'hydratation pour éviter un clignotement, seulement si les scripts tournent ; il réapparaît
+ * de toute façon après 2,5 s si le script n'a pas pris la main.
+ */
+@media (scripting: enabled) {
+  [data-intro] {
+    opacity: 0;
+    animation: intro-fallback 0s 2.5s forwards;
+  }
+}
+
+@keyframes intro-fallback {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .border-beam {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

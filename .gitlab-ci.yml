@@ -1,0 +1,43 @@
+# Vérification de chaque demande de fusion (D-28) : rien n'entre dans master sans lint, types,
+# formatage et build verts. Les mêmes commandes se lancent en local avec `npm run check`.
+# Pas de pipeline après la fusion dans master : le code y a déjà été vérifié.
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+default:
+  image: node:24-slim
+  interruptible: true
+  cache:
+    key:
+      files: [package-lock.json]
+    paths: [.npm/]
+  before_script:
+    - npm ci --cache .npm --prefer-offline --no-audit --no-fund
+
+variables:
+  NEXT_TELEMETRY_DISABLED: "1"
+
+stages: [verification]
+
+lint:
+  stage: verification
+  script: npm run lint
+
+types:
+  stage: verification
+  script: npm run typecheck
+
+formatage:
+  stage: verification
+  script: npm run format:check
+
+build:
+  stage: verification
+  script: npm run build
+  cache:
+    - key:
+        files: [package-lock.json]
+      paths: [.npm/]
+    - key: next-build-$CI_COMMIT_REF_SLUG
+      paths: [.next/cache/]

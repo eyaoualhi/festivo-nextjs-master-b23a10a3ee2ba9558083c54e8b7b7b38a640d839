@@ -1,0 +1,64 @@
+---
+description: Architecture App Shell et App Router de Next.js — arborescence, conventions de fichiers, routes (cours ch. 2)
+alwaysApply: true
+---
+
+# Architecture Next.js (cours ch. 2)
+
+## Modèle : App Shell
+
+L'application suit le modèle **App Shell** : une coquille stable (header, navigation, footer)
+chargée en priorité et mise en cache par le Service Worker, et une **zone de contenu
+dynamique** qui seule change. La coquille vit dans `app/[lang]/layout.tsx` (et les layouts de
+segments) ; les pages ne remplissent que la zone de contenu.
+
+Toutes les routes sont sous le segment de langue `app/[lang]/` (`/fr`, `/en`, `/ar` — D-19).
+La langue se lit avec `getI18n()` (`lib/i18n/server.ts`, via `next/root-params`) ; `proxy.ts`
+ajoute la langue aux adresses qui n'en ont pas.
+
+## Arborescence (pas de dossier `src/` — le cours utilise `app/` + `public/`)
+
+```
+app/                 routes (App Router) — un dossier = un segment d'URL
+app/actions/         Server Actions, un fichier par entité (cours ch. 5 : app/actions/Task.ts)
+components/layout/   éléments de la coquille : header, navigation, footer
+components/ui/       composants réutilisables (bouton, carte, champ…)
+context/             Providers React Context (cours ch. 4 : context/UserContext)
+hooks/               hooks personnalisés `useXxx`
+lib/                 utilitaires serveur/partagés (cours ch. 5 : lib/db.ts)
+models/              schémas de données (cours ch. 5 : models/Task.ts)
+types/               types TypeScript partagés
+public/              statiques : manifest.json, sw.js, icons/
+docs/                cahier des charges et décisions d'équipe
+```
+
+Imports via l'alias `@/` (`import { connectDB } from "@/lib/db"`), jamais de `../../..`.
+
+## Conventions de fichiers dans `app/`
+
+`page.tsx` (page visible), `layout.tsx` (structure commune), `loading.tsx` (squelette de
+chargement), `error.tsx` (erreurs, composant client), `not-found.tsx`, `route.ts` (endpoint).
+Préférer les **Server Actions** aux `route.ts` pour les mutations (cours ch. 5). Dans cette
+version de Next.js, `middleware` s'appelle `proxy` (`node_modules/next/dist/docs`).
+
+## Routes dynamiques — syntaxe de la version installée
+
+Le cours montre `{ params: { id: string } }` : **ne compile plus** ici. `params` est une
+`Promise`. Utiliser le helper global `PageProps` :
+
+```tsx
+// app/[lang]/(site)/evenements/[id]/page.tsx
+export default async function Page({ params }: PageProps<"/[lang]/evenements/[id]">) {
+  const { id } = await params;
+  // ...
+}
+```
+
+Les layouts utilisent `LayoutProps<"/[lang]">` (voir `app/[lang]/layout.tsx`).
+
+## Cache Components est activé (`next.config.ts`)
+
+Toute donnée non mise en cache (requête BD, cookies, session) doit être lue dans un composant
+enveloppé par `<Suspense>` ou couvert par un `loading.tsx`, sinon le build échoue. Consulter
+`node_modules/next/dist/docs/01-app/02-guides/` (cache-components, offline-support) avant
+d'écrire une page qui charge des données.
