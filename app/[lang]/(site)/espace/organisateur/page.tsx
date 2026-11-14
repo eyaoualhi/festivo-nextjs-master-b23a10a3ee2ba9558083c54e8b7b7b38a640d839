@@ -9,11 +9,13 @@ import { getOrganizerEvents, getOrganizerStats } from "@/lib/events";
 import { formatNumber } from "@/lib/format";
 import { localizePath } from "@/lib/i18n/config";
 import { getDictionary, getI18n } from "@/lib/i18n/server";
+import { getOrganizerEventsWithParticipants } from "@/lib/registrations";
 import EmptyState from "@/app/[lang]/(site)/espace/_components/EmptyState";
 import ProfileCard from "@/app/[lang]/(site)/espace/_components/ProfileCard";
 import SpaceHeader from "@/app/[lang]/(site)/espace/_components/SpaceHeader";
 import SpaceSection from "@/app/[lang]/(site)/espace/_components/SpaceSection";
 import SpaceSkeleton from "@/app/[lang]/(site)/espace/_components/SpaceSkeleton";
+import EventParticipantsTracking from "./_components/EventParticipantsTracking";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
@@ -34,9 +36,10 @@ async function OrganizerDashboard() {
   const { locale, dict } = await getI18n();
   const user = await requireRole(locale, "organisateur");
   const t = dict.dashboard;
-  const [counts, events] = await Promise.all([
+  const [counts, events, trackingList] = await Promise.all([
     getOrganizerStats(user.id),
     getOrganizerEvents(user.id),
+    getOrganizerEventsWithParticipants(user.id),
   ]);
   const stats = [
     { icon: CalendarRange, label: t.organizer.stats.events, value: counts.events },
@@ -103,7 +106,11 @@ async function OrganizerDashboard() {
             )}
           </SpaceSection>
           <SpaceSection id="tracking-title" title={t.organizer.registrationsTitle}>
-            <EmptyState icon={ClipboardList} title={t.organizer.registrationsEmpty} />
+            {trackingList.length > 0 ? (
+              <EventParticipantsTracking trackingList={trackingList} locale={locale} />
+            ) : (
+              <EmptyState icon={ClipboardList} title={t.organizer.registrationsEmpty} />
+            )}
           </SpaceSection>
         </div>
         <ProfileCard
